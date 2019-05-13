@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Index from '@/views/index'
 import Register from '@/views/register'
 import Login from '@/views/login'
+import NotFound from '@/views/404'
 
 Vue.use(Router)
 
@@ -26,6 +27,11 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '*',
+      name: 'NotFound',
+      component: NotFound
     }
   ]
 })

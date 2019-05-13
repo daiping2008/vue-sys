@@ -1,13 +1,19 @@
 <template>
-  <div>index</div>
+  <div>
+    <v-head></v-head>
+  </div>
 </template>
 
 <script>
+import VHead from '@/components/head'
 export default {
-
+  name: 'index',
+  components: {
+    VHead
+  }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>
