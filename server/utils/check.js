@@ -3,6 +3,7 @@ const config = require('../config')
 
 const check = async (ctx, next) => {
   const url = ctx.request.url
+  console.log(url)
   if (url === '/user/login' || url === '/user/register') await next()
   else {
     const token = ctx.request.headers['authorization'].split(' ')[1]

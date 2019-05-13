@@ -23,7 +23,7 @@ router.post('/register', async (ctx, next) => {
 
     const newUser = new UserModel({ username, email, avatar, identify, password: md5(password) })
     await newUser.save()
-    return (ctx.body = { code: 0, msg: '注册成功' })
+    return (ctx.body = { code: 0, data: { msg: '注册成功' } })
   } catch (err) {
     return (ctx.body = { code: 1, msg: '出错啦' })
   }

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-plugin-component": "^1.1.1",
     "core-js": "^2.6.5",
     "element-ui": "^2.8.2",
     "jsonwebtoken": "^8.5.1",

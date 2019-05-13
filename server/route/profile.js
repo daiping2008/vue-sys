@@ -18,7 +18,7 @@ router.post('/add', async ctx => {
   try {
     const newPorfile = new ProfileModel({ type, describe, income, expend, cash, remark })
     await newPorfile.save()
-    return (ctx.body = { code: 0, msg: '添加成功' })
+    return (ctx.body = { code: 0, data: { msg: '添加成功' } })
   } catch (err) {
     return (ctx.body = { code: 1, msg: '出错啦' })
   }
@@ -40,7 +40,7 @@ router.post('/edit/:id', async ctx => {
   const { type, describe, income, expend, cash, remark } = ctx.request.body
   try {
     await ProfileModel.findOneAndUpdate({ _id: id }, { $set: { type, describe, income, expend, cash, remark, upadtedAt: Date.now() } }, { new: true })
-    return (ctx.body = { code: 0, msg: '修改成功' })
+    return (ctx.body = { code: 0, data: { msg: '修改成功' } })
   } catch (err) {
     return (ctx.body = { code: 1, msg: '出错啦' })
   }
@@ -50,7 +50,7 @@ router.delete('/delete/:id', async ctx => {
   const { id } = ctx.params
   try {
     await ProfileModel.findOneAndDelete({ _id: id })
-    return (ctx.body = { code: 0, msg: '删除成功' })
+    return (ctx.body = { code: 0, data: { msg: '删除成功' } })
   } catch (err) {
     return (ctx.body = { code: 1, msg: '出错啦' })
   }
