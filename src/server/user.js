@@ -8,6 +8,13 @@ class UserServer extends HTTP {
       method: 'POST'
     })
   }
+  login ({ email, password }) {
+    return this.request({
+      url: '/user/login',
+      data: { email, password },
+      method: 'POST'
+    })
+  }
 }
 
 export default UserServer

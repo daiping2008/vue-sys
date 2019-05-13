@@ -2,7 +2,7 @@
   <div class="register">
     <div class="register-container">
       <div class="title">在线后台管理系统</div>
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
         <el-form-item label="用户名" prop='username'>
           <el-input type="text" v-model="ruleForm.username" placeholder="输入用户名"></el-input>
         </el-form-item>

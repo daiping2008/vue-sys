@@ -29,5 +29,12 @@ const router = new Router({
     }
   ]
 })
-
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  const isLogin = !!window.localStorage.getItem('token')
+  if (to.path === '/login' || to.path === '/register') next()
+  else {
+    isLogin ? next() : next({ name: 'login' })
+  }
+})
 export default router

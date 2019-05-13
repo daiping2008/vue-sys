@@ -7,16 +7,13 @@ router.prefix('/user')
 
 router.get('/', async ctx => {
   const res = await UserModel.find()
-  console.log(res)
   ctx.body = { code: 0, data: res }
 })
 
 router.post('/register', async (ctx, next) => {
-  console.log(ctx.request.body)
   const { username, password, email, avatar, identify } = ctx.request.body
   try {
     const user = await UserModel.findOne({ email })
-    console.log(user)
     if (user) {
       return (ctx.body = { code: 1, msg: '邮箱已经存在啦' })
     }
@@ -45,7 +42,6 @@ router.post('/login', async (ctx, next) => {
 })
 
 router.get('/getUser', async ctx => {
-  console.log('1')
   ctx.body = { code: 0 }
 })
 module.exports = router

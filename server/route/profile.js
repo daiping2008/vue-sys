@@ -14,7 +14,6 @@ router.get('/list', async ctx => {
 // 添加
 router.post('/add', async ctx => {
   const { type, describe, income, expend, cash, remark } = ctx.request.body
-  console.log({ type, describe, income, expend, cash, remark })
   try {
     const newPorfile = new ProfileModel({ type, describe, income, expend, cash, remark })
     await newPorfile.save()
