@@ -9,7 +9,7 @@
         </div>
         <div>
           <i class="el-icon-info"></i>
-          {{user.identity===1?'管理员':'普通员工'}}
+          {{user.identity === 1 ? '管理员' : '普通员工'}}
         </div>
       </el-col>
     </el-row>

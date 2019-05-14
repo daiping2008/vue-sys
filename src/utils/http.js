@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '../router'
 import { Message, Loading } from 'element-ui'
 let loading
 const startLoading = () => {
@@ -16,7 +17,7 @@ axios.interceptors.request.use(config => {
   startLoading()
   const token = window.localStorage.getItem('token')
   if (token) {
-    config.headers.Authorization = token
+    config.headers['authorization'] = token
   }
   return config
 }, err => {
@@ -44,7 +45,7 @@ class HTTP {
             resolve(data.data)
           } else if (data.code === 10) {
             // token过期或者未登录
-            window.location.href = '/login'
+            router.push({ name: 'login' })
           } else {
             Message.error(data.msg)
             reject(data.msg)

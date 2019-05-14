@@ -48,7 +48,7 @@ export default {
           icon: 'el-icon-s-order',
           name: '资金管理',
           path: 'fund',
-          children: [{ path: 'foundlist', name: '资金流水' }]
+          children: [{ path: 'fundlist', name: '资金流水' }]
         },
         {
           icon: 'el-icon-s-custom',
