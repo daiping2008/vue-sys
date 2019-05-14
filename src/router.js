@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/views/index'
+import Home from '@/views/index/home'
+import InfoShow from '@/views/index/info-show'
 import Register from '@/views/register'
 import Login from '@/views/login'
 import NotFound from '@/views/404'
@@ -16,7 +18,23 @@ const router = new Router({
     {
       path: '/index',
       name: 'index',
-      component: Index
+      component: Index,
+      children: [
+        {
+          path: '/',
+          redirect: '/home'
+        },
+        {
+          path: '/home',
+          name: 'home',
+          component: Home
+        },
+        {
+          path: '/infoshow',
+          name: 'infoshow',
+          component: InfoShow
+        }
+      ]
     },
     {
       path: '/register',

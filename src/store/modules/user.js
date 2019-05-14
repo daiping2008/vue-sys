@@ -6,7 +6,10 @@ const state = {
   isAutnenticated: false,
   user: {}
 }
-const getters = {}
+const getters = {
+  isAutnenticated: state => state.isAutnenticated,
+  user: state => state.user
+}
 const mutations = {
   [types.SET_IS_AUTNENTIATED] (state, payload) {
     state.isAutnenticated = payload

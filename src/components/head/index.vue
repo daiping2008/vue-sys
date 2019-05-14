@@ -10,7 +10,7 @@
           <img class="avatar" src='' alt=''/>
           <div class="welcome">
             <p class="name comename">欢迎</p>
-            <p class='name avatarname'>Susan</p>
+            <p class='name avatarname'>{{user.username}}</p>
           </div>
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link">
@@ -29,9 +29,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'head-nav',
+  computed: {
+    ...mapGetters(['user'])
+  },
   methods: {
     ...mapActions(['setIsAutnenticated', 'setUser']),
     handleCommand (command) {
