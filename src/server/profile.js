@@ -6,6 +6,19 @@ class ProfileServer extends HTTP {
       url: '/profile/list'
     })
   }
+  addProfile (profile) {
+    return this.request({
+      url: '/profile/add',
+      data: profile,
+      method: 'POST'
+    })
+  }
+  delProfile (id) {
+    return this.request({
+      url: `/profile/delete/${id}`,
+      method: 'DELETE'
+    })
+  }
 }
 
 export default ProfileServer
