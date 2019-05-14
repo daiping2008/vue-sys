@@ -2,15 +2,18 @@
   "name": "vue-sys",
   "version": "0.1.0",
   "private": true,
+  "main": "server/app.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "dev":"cross-env NODE_ENV=dev nodemon ./server/node/app.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "babel-plugin-component": "^1.1.1",
     "core-js": "^2.6.5",
+    "cross-env": "^5.2.0",
     "element-ui": "^2.8.2",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
@@ -19,6 +22,7 @@
     "koa-router": "^7.4.0",
     "mongoose": "^5.5.7",
     "node-sass": "^4.12.0",
+    "nodemon": "^1.19.0",
     "sass-loader": "^7.1.0",
     "utility": "^1.16.1",
     "vue": "^2.6.10",

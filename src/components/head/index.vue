@@ -17,7 +17,9 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="userinfo">用户信息</el-dropdown-item>
+              <router-link to="/infoshow">
+                <el-dropdown-item command="userinfo">用户信息</el-dropdown-item>
+              </router-link>
               <el-dropdown-item command="logout">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
