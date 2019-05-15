@@ -7,7 +7,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "dev":"cross-env NODE_ENV=dev nodemon ./server/node/app.js"
+    "dev":"cross-env NODE_ENV=dev nodemon ./server/node/bin/www.js"
   },
   "dependencies": {
     "axios": "^0.18.0",

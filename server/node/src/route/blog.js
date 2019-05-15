@@ -1,31 +1,52 @@
+const { getList, getDetail, addBlog, updateBlog, delBlog } = require('../controller/blog')
+const { SuccessModel, ErrorModel } = require('../models/resModel')
 const handleBlogRouter = (req, res) => {
   const method = req.method
-  const url = req.url
-  const path = url.split('?')[0]
+  const path = req.path
 
   if (method === 'GET' && path === '/api/blog/list') {
-    return {
-      msg: '这是获博客的接口'
-    }
+    const { author, keyword } = req.query
+    console.log('author', author)
+    console.log('keyword', keyword)
+    const r = getList(author, keyword)
+    return new SuccessModel(r)
   }
   if (method === 'GET' && path === '/api/blog/detail') {
-    return {
-      msg: '这是获取博客详情的接口'
-    }
+    const { id } = req.query
+    console.log('id: ', id)
+    const r = getDetail(id)
+    return new SuccessModel(r)
   }
   if (method === 'POST' && path === '/api/blog/new') {
-    return {
-      msg: '这是新建博客的接口'
+    const body = req.body
+    console.log('body', body)
+    const r = addBlog(body)
+    if (r) {
+      return new SuccessModel('添加成功')
+    } else {
+      return new ErrorModel('添加失败')
     }
   }
   if (method === 'POST' && path === '/api/blog/update') {
-    return {
-      msg: '这是更新客的接口'
+    const { id } = req.query
+    const body = req.body
+    console.log('id:', id)
+    console.log('body:', body)
+    const r = updateBlog(id, body)
+    if (r) {
+      return new SuccessModel('修改成功')
+    } else {
+      return new ErrorModel('修改失败')
     }
   }
   if (method === 'POST' && path === '/api/blog/del') {
-    return {
-      msg: '这是删除客的接口'
+    const { id } = req.body
+    console.log('id:', id)
+    const r = delBlog(id)
+    if (r) {
+      return new SuccessModel('删除成功')
+    } else {
+      return new ErrorModel('删除失败')
     }
   }
 }

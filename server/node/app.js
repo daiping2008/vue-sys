@@ -79,10 +79,60 @@
 // })
 // server.listen(8000)
 
-const http = require('http')
-const serverHandle = require('./bin/serverHandle')
-const server = http.createServer(serverHandle)
+const handleUserRouter = require('./src/route/user')
+const handleBlogRouter = require('./src/route/blog')
+const querystring = require('querystring')
 
-server.listen(8000, () => {
-  console.log('ok!')
-})
+// 获取POST请求数据
+const getPostData = req => {
+  return new Promise((resolve, reject) => {
+    if (req.method !== 'POST') {
+      resolve({})
+      return
+    }
+    if (req.headers['content-type'] !== 'application/json') {
+      resolve({})
+      return
+    }
+    let res = ''
+    req.on('data', chunk => {
+      res += chunk.toString()
+    })
+    req.on('end', () => {
+      if (!res) {
+        resolve({})
+        return
+      }
+      resolve(JSON.parse(res))
+    })
+  })
+}
+
+const serverHandle = (req, res) => {
+  // 设置返回格式JSON
+  res.setHeader('Content-type', 'application/json')
+  const url = req.url
+  req.path = url.split('?')[0]
+  req.query = querystring.parse(url.split('?')[1])
+
+  getPostData(req)
+    .then((postData) => {
+      req.body = postData
+
+      const userRouter = handleUserRouter(req, res)
+      if (userRouter) {
+        res.end(JSON.stringify(userRouter))
+        return
+      }
+      const blogRouter = handleBlogRouter(req, res)
+      if (blogRouter) {
+        res.end(JSON.stringify(blogRouter))
+        return
+      }
+      res.writeHead(404, { 'Content-type': 'text/plain' })
+      res.write('404 Not Found')
+      res.end()
+    })
+}
+
+module.exports = serverHandle
