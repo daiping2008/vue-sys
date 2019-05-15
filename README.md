@@ -152,3 +152,89 @@ server.listen(8000)
 返回假数据：将路由和数据处理分类，符合设计原则
 获取博客列表/api/blog/list  get
 
+#mysql
+安装mysql,MySQL Workbeach
+
+#建库
+```sql
+CREATE SCHEMA `myblog` ;
+```
+#建表
+```sql
+CREATE TABLE `myblog`.`new_table` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(20) NOT NULL,
+  `password` VARCHAR(20) NOT NULL,
+  `realname` VARCHAR(20) NOT NULL,
+  `createTime` BIGINT(20) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`));
+```
+#操作表
+```sql
+use myblog
+```
+#插入操作
+```sql
+insert into users (username, `password`, realname) values ('susan', '123', '苏珊')
+```
+#查询操作
+```sql
+select * from users
+
+select id, username from users
+
+select * from users where username='susan'
+
+select * from users where username='susan' or `password` ='123'
+
+select * from users where username like '%a%'
+
+select * from users order by id desc
+```
+#更新操作
+```sql
+update users set realname='苏' where id = 2
+```
+#删除操作
+```sql
+delete from users where id = 2
+```
+
+#cookie
+存储在浏览器的一段字符串
+跨域不共享
+格式如K1=V1;K2=V2;K3=V3;因此可以存储结构化数据
+
+每次发生http请求，会将请求域的cookie一起发生给server
+server可以修改cookie并返回给浏览器
+浏览器中也可以通过js修改cookie
+
+客户端添加cookie
+```js
+document.cookie='key=value'
+```
+server端nodejs操作cookie
+解析cookie
+```js
+req.cookie = {}
+const cookie = req.headers.cookie || ''
+cookie.split(';').forEach(item=>{
+  if(!item) return 
+  const arr = item.split('=')
+  const key = arr[0]
+  const val = arr[1]
+  req.cookie[key] = val
+})
+```
+设置cookie
+```js
+const getCookieExpires = () => {
+  const d = new Date()
+  d.setTime(d.getTime() + (24*60*60*1000))
+  return d.toGMTString()
+}
+
+res.setHeader('Set-Cookie', `username=${username}; path=/;httpOnly; expires=${getCookieExpires()} `)
+```
+
+#session

@@ -121,14 +121,24 @@ const serverHandle = (req, res) => {
 
       const userRouter = handleUserRouter(req, res)
       if (userRouter) {
-        res.end(JSON.stringify(userRouter))
+        userRouter.then(result => {
+          if (result) {
+            res.end(JSON.stringify(result))
+          }
+        })
         return
       }
+
       const blogRouter = handleBlogRouter(req, res)
       if (blogRouter) {
-        res.end(JSON.stringify(blogRouter))
+        blogRouter.then(result => {
+          if (result) {
+            res.end(JSON.stringify(result))
+          }
+        })
         return
       }
+
       res.writeHead(404, { 'Content-type': 'text/plain' })
       res.write('404 Not Found')
       res.end()
