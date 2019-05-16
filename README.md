@@ -430,3 +430,106 @@ express express-test
 npm install & npm start
 
 # app.js
+
+# 中间件机制
+app.use
+next
+
+# 登录
+使用express-session 和 connect-redis
+req.session保存登录信息，登录校验做出express中间件
+
+session存储到内存中
+express-session
+```js
+// 每次请求都会有session的值
+const session = require('express-session')
+// sesion存储到内存中，即req.session
+app.use(session({
+  secret:'任意字符串',
+  cookie:{
+    path:'/',
+    httpOnly:true,
+    maxAge:24 * 60 * 60 * 1000
+  }
+}))
+
+// 登录
+req.session.username=data.username,
+```
+session存储到redis中
+redis, connect-redis
+```js
+// redis文件
+const redis = require('redis')
+const redisClient = redis.createClient(xxx,xxx)
+redisClient.on('error', err => {
+  console.log(err)
+})
+module.exports = redisClient
+
+// app.js
+const RedisStore = require('connect-redis')(session)// session是上面express-session
+const redisClient = require('redis文件路径')
+const sessionStore = new RedisStore({
+  client: redisClient
+})
+// session存储到redis
+app.use(session({
+  secret:'任意字符串',
+  cookie:{
+    path:'/',
+    httpOnly:true,
+    maxAge:24 * 60 * 60 * 1000
+  },
+  store: sessionStore
+}))
+```
+登录中间件
+```js
+module.exports = (req, res, next) => {
+  if (req.session.username) {
+    next()
+    return 
+  }
+  res.json({
+    code: 1,
+    msg: '未登录'
+  })
+}
+
+router.get('/list', loginCheck, (req, res, next) => {
+})
+
+``` 
+# 日志
+access log记录，直接使用morgan
+自定义日志使用console.log和console.error即可
+日志拆分，日志内容分析
+
+开发环境使用控制台打印日志，线上环境日志打印到access.log文件中
+```js
+const logger = require('morgan')
+const ENV = process.env.NODE_ENV
+if (ENV === 'production') {
+  const logFileName = path.join(__dirname, 'logs', 'access.log')
+  const writeStream = fs.createWriteStream(logFileName, {
+    flags: 'a'
+  })
+  app.use(logger('combined', {
+    stream: writeStream
+  }))
+} else {
+  app.use(logger('dev'), {
+    stream: process.stdout
+  })
+}
+```
+
+# express中间件原理
+app.use 注册中间件
+遇到http请求，根据path和method判断触发哪些方法
+实现next机制，即上一个通过next触发一个中间件
+
+
+## koa2
