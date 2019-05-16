@@ -1,6 +1,6 @@
-##nodejs
+## nodejs
 
-#模块化
+# 模块化
 定义
 ```js
 function add(a, b){ return a+b}
@@ -10,32 +10,32 @@ module.exports = add
 ```js
 const add = require('./a)
 ```
-#node的debug
-
-#服务稳定性
+# node的debug
+使用vscode的debug模式
+# 服务稳定性
 server端可能会遭受各种恶意攻击和误操作
 单个客户端可以意外挂掉，但是服务器不能
 进程守候
-#考虑CPU和内存
+# 考虑CPU和内存
 客户端独占一个浏览器，内存和CPU都不是问题
 server端要承载很多请求，CPU和内存都是稀缺资源
 steam写日志，使用redis存session
-#日志记录
+# 日志记录
 前端也会参与写日志，但只是日志的发起方，不关心后续
 server端要记录日志，存储日志，分析日志，前端不关心
-#安全
+# 安全
 server端要随时准备接受各种恶意攻击，前端则少很多
 如：越权操作，数据库攻击等
 预防xss攻击和sql注入
-#集群和服务拆分
+# 集群和服务拆分
 产品发展速度快，流量可能会迅速增加
 
-#目标
+# 目标
 开发一个博客系统，具有博客的基本功能
 只开发server端，不关心前端
-#技术方案
+# 技术方案
 
-#http
+# http
 DNS解析， 建立TCP连接，发生http请求
 server接收到http请求，处理，并返回
 客户端接收到返回数据，处理数据
@@ -47,7 +47,7 @@ const server = http.createServer((req, res) => {
 })
 server.listen(8000)
 ```
-#nodejs处理get请求
+# nodejs处理get请求
 参数获取
 ```js
 const http = require('http')
@@ -64,7 +64,7 @@ const server = http.createServer((req, res) => {
 
 server.listen(8000)
 ```
-#nodejs处理postqingq
+# nodejs处理postqingq
 ```js
 const http = require('http')
 
@@ -87,7 +87,7 @@ server.listen(8000, () => {
   console.log('success')
 })
 ```
-#nodejs处理路由
+# nodejs处理路由
 http://github.com/
 http://github.com/username/
 http://github.com/username/xxx
@@ -140,26 +140,26 @@ const server = http.createServer((req, res) => {
 server.listen(8000)
 ```
 
-#搭建环境
+# 搭建环境
 安装依赖 nodemon cross-env
 在package.json配置，修改node会自动重启
 ```json
 "dev":"cross-env NODE_ENV=dev nodemon ./server/app.js"
 ```
 
-#接口设计
+# 接口设计
 初始化路由：根据之前技术方案的设计，做出路由
 返回假数据：将路由和数据处理分类，符合设计原则
 获取博客列表/api/blog/list  get
 
-#mysql
+# mysql
 安装mysql,MySQL Workbeach
 
-#建库
+# 建库
 ```sql
 CREATE SCHEMA `myblog` ;
 ```
-#建表
+# 建表
 ```sql
 CREATE TABLE `myblog`.`new_table` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -169,15 +169,15 @@ CREATE TABLE `myblog`.`new_table` (
   `createTime` BIGINT(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`));
 ```
-#操作表
+# 操作表
 ```sql
 use myblog
 ```
-#插入操作
+# 插入操作
 ```sql
 insert into users (username, `password`, realname) values ('susan', '123', '苏珊')
 ```
-#查询操作
+# 查询操作
 ```sql
 select * from users
 
@@ -191,16 +191,16 @@ select * from users where username like '%a%'
 
 select * from users order by id desc
 ```
-#更新操作
+# 更新操作
 ```sql
 update users set realname='苏' where id = 2
 ```
-#删除操作
+# 删除操作
 ```sql
 delete from users where id = 2
 ```
 
-#cookie
+# cookie
 存储在浏览器的一段字符串
 跨域不共享
 格式如K1=V1;K2=V2;K3=V3;因此可以存储结构化数据
@@ -237,4 +237,122 @@ const getCookieExpires = () => {
 res.setHeader('Set-Cookie', `username=${username}; path=/;httpOnly; expires=${getCookieExpires()} `)
 ```
 
-#session
+# session
+
+问题
+session是js变量，放在nodejs进程内存中
+内存有限，访问量过大，内存暴增
+正式线上运行时多进程，进程之间内存无法共享
+# redis
+web server最常用的缓存数据库，数据库放在内存中
+相比于mysql，访问速度快
+但是成本更高，可储存数量少
+
+将web server和redis拆分为两个单独的服务
+双方都是独立的，都是可扩展的
+
+可以解决session的几个问题
+
+session访问频繁，对性能要求极高
+session数据量不会太大
+
+网站数据不适合redis
+操作频率不是太高
+数据量太大，内存成本太高
+
+
+## 日志
+系统没有日志，等于人没有眼睛
+访问日志access log(每个接口日志)
+自定义日志(包括事件日志，错误日志)
+
+日志放在文件中，
+  需要nodejs文件操作，nodejs steam提高写日志性能
+日志功能开发和使用
+日志文件拆分，日志内容分析
+
+日志不存储到redis中，因为日志文件非常大，日志对性能要求不是很高
+日志不存储到mysql中
+
+```js
+const fs = require('fs')
+const path = require('path')
+
+const fileName = path.resolve(__dirname, 'data.txt')
+fs.readFile(fileName, (err, data) => {
+  if (err) return 
+  // data是二进制类型，需要转换字符串
+  console.log(data.toString())
+})
+```
+写入
+```js
+const content = '这是新写入的内容\n'
+fs.writeFile(fileName, (err, data) => {
+  if (err) return 
+  // data是二进制类型，需要转换字符串
+  console.log(data.toString())
+})
+```
+判断文件是否存在
+```js
+fs.exists(fileName, exist=>{
+  console.log(exist)
+})
+```
+
+# IO操作的性能瓶颈
+IO包括 网络IO 和 文件IO
+相比于CPU计算和内存读写，IO的特点就是慢
+如何在有限的硬件资源下提高IO的操作频率
+
+# stream
+
+```js
+const fs = require('fs')
+
+const { resolve } = require('path')
+
+const http = require('http')
+
+const server = http.createServer((req, res) => {
+  if (req.method === 'GET') {
+    const fileName = resolve(__dirname, 'data.txt')
+    const readStream = fs.createReadStream(fileName)
+    readStream.pipe(res)
+  }
+})
+
+server.listen(3000, () => {
+  console.log('ok!')
+})
+
+```
+
+拷贝文件
+```js
+const fs = require('fs')
+
+const { resolve } = require('path')
+
+const source = resolve(__dirname, 'data.txt')
+const result = resolve(__dirname, 'data-bnk.txt')
+
+const readStream = fs.createReadStream(source)
+const writeStream = fs.createWriteStream(result)
+readStream.pipe(writeStream)
+
+readStream.on('end', () => {
+  console.log('写入完毕')
+})
+readStream.on('error', err => {
+  console.log(err)
+})
+```
+
+# 日志拆分
+日志都放一个文件中不好处理
+可以按直接划分日志文件
+实现方式：linux的crontab命令，即定时任务
+
+

@@ -82,7 +82,7 @@
 const handleUserRouter = require('./src/route/user')
 const handleBlogRouter = require('./src/route/blog')
 const querystring = require('querystring')
-
+const { access } = require('./src//utils/log')
 // 获取POST请求数据
 const getPostData = req => {
   return new Promise((resolve, reject) => {
@@ -109,6 +109,8 @@ const getPostData = req => {
 }
 
 const serverHandle = (req, res) => {
+  // 记录日志
+  access(`${req.method} -- ${req.url} -- ${req.headers['user-agent']} -- ${Date.now()}`)
   // 设置返回格式JSON
   res.setHeader('Content-type', 'application/json')
   const url = req.url
