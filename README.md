@@ -349,10 +349,84 @@ readStream.on('error', err => {
   console.log(err)
 })
 ```
+日志操作
+```js
+const fs = require('fs')
+const { join } = require('path')
 
+// 写日志
+function writeLog (writeStream, log) {
+  writeStream.write(log + '\n')
+}
+
+// 生成 write Stream
+function createWriteStream (fileName) {
+  const fullFileName = join(__dirname, '../', 'logs', fileName)
+  const writeStream = fs.createWriteStream(fullFileName, {
+    flags: 'a'
+  })
+  return writeStream
+}
+// 访问日志
+const accessWriteStream = createWriteStream('access.log')
+
+function access (log) {
+  writeLog(accessWriteStream, log)
+}
+
+module.exports = {
+  access
+}
+
+```
 # 日志拆分
 日志都放一个文件中不好处理
 可以按直接划分日志文件
 实现方式：linux的crontab命令，即定时任务
 
 
+## 安全
+# sql注入：窃取数据库内容
+最原始，最简单的攻击，从有了web2.0有了sql注入攻击
+攻击方式；输入一个sql片段，最终拼接成一段攻击代码
+预防措施：使用mysql的escape函数处理内容即可
+方法一：使用escape()对传入参数进行编码
+参数编码方法如下
+```js
+mysql.escape(param)
+connection.escape(param)
+pool.escape(param)
+```
+```js
+var userId = 1, name = 'test';
+var query = connection.query('SELECT * FROM users WHERE id = ' + connection.escape(userId) + ', name = ' + connection.escape(name), function(err, results) {
+// ...
+});
+console.log(query.sql); // SELECT * FROM users WHERE id = 1, name = 'test'
+```
+方法二：使用connection.query()的查询参数占位符
+使用查询参数占位符，会自动执行connection.escape()
+```js
+var userId = 1, name = 'test';
+var query = connection.query('SELECT * FROM users WHERE id = ?, name = ?', [userId, name], function(err, results) {
+// ...
+});
+console.log(query.sql); // SELECT * FROM users WHERE id = 1, name = 'test'
+```
+# XSS攻击：窃取前端的cookie内容
+攻击方式：在页面展示内容中掺杂js代码，获取网页信息
+预防措施：转换生成js的特殊字符
+# 密码加密：保障用户信息安全
+
+
+## express
+express下载，安装和使用，express中间件机制
+开发接口，连接数据库，实现登录，日志记录
+
+# 介绍express
+安装（使用脚手架express-generator）
+npm install express-generator -g
+express express-test
+npm install & npm start
+
+# app.js
