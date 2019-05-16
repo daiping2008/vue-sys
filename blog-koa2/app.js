@@ -16,7 +16,7 @@ const path = require('path')
 const config = require('./config')
 const routes = require('./routes')
 const users = require('./routes/users')
-console.log(users.toString())
+
 const port = process.env.PORT || config.port
 
 // error handler

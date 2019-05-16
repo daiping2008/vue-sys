@@ -533,3 +533,30 @@ app.use 注册中间件
 
 
 ## koa2
+基于koa-generic-session和koa-redis
+
+```js
+const session = require('koa-generic-session')
+const redisStore = require('koa-redis')
+
+// session 配置
+app.keys = ['keys', 'keykeys']
+app.use(session({
+  cookie:{
+    path:'/',
+    httpOnly:true,
+    maxAge: 24 * 60 * 60 * 1000
+  },
+  store: redisStore({
+    all:'127.0.0.1:6379'
+  })
+}))
+
+// ctx.session
+// 登录
+ctx.session.username = username
+```
+# 日志
+安装koa-morgan
+
+
